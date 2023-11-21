@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redisqueue-exporter
+  namespace: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: redisqueue-exporter
+  template:
+    metadata:
+      labels:
+        app: redisqueue-exporter
+    spec:
+      containers:
+      - image: fjsmlym8177/redisqueue-exporter:0.1 
+        imagePullPolicy: IfNotPresent
+        name: redisqueue-exporter
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources:
+          limits:
+            memory: 2Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: redisqueue-exporter
+  name: redisqueue-exporter
+  namespace: prometheus
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: redisqueue-exporter
+  type: ClusterIP
