@@ -1,2 +1,2 @@
-./tmp
-./redisqueue-exporter
+tmp/
+redisqueue-exporter
